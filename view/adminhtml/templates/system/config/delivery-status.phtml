@@ -1,0 +1,49 @@
+<?php
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+
+/**
+ * Where server-side delivery stands: the counts, the progress line, and the failed line with its actions
+ *
+ * The actions' markup is escaped by each action.
+ *
+ * @var \Hryvinskyi\DataLayerServerSideAdminUi\Block\Adminhtml\System\Config\DeliveryStatus $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var array{id: string, pending: int, sent: int, failed: int, progress: string, failedLine: string,
+ *     actions: string} $view What the block assigned for the field being rendered
+ */
+?>
+<div class="hryvinskyi-datalayer-delivery" id="<?= $escaper->escapeHtmlAttr($view['id']) ?>">
+    <dl class="hryvinskyi-datalayer-delivery__counts">
+        <div class="hryvinskyi-datalayer-delivery__count">
+            <dt><?= $escaper->escapeHtml(__('Pending')) ?></dt>
+            <dd data-role="pending"><?= (int) $view['pending'] ?></dd>
+        </div>
+        <div class="hryvinskyi-datalayer-delivery__count">
+            <dt><?= $escaper->escapeHtml(__('Sent')) ?></dt>
+            <dd data-role="sent"><?= (int) $view['sent'] ?></dd>
+        </div>
+        <div class="hryvinskyi-datalayer-delivery__count">
+            <dt><?= $escaper->escapeHtml(__('Failed')) ?></dt>
+            <dd data-role="failed" class="<?= $view['failed'] > 0 ? 'is-failing' : '' ?>">
+                <?= (int) $view['failed'] ?>
+            </dd>
+        </div>
+    </dl>
+    <div class="hryvinskyi-datalayer-delivery__line" data-role="progress">
+        <?= $escaper->escapeHtml($view['progress']) ?>
+    </div>
+    <?php if ($view['failedLine'] !== ''): ?>
+        <div class="hryvinskyi-datalayer-delivery__failed" data-role="failed-line">
+            <span class="hryvinskyi-datalayer-delivery__failed-text">
+                <?= $escaper->escapeHtml($view['failedLine']) ?>
+            </span>
+            <?php if ($view['actions'] !== ''): ?>
+                <div class="hryvinskyi-datalayer-delivery__actions"><?= /* @noEscape */ $view['actions'] ?></div>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>

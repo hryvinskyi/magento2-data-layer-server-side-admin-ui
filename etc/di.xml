@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Transports a website can deliver through: code to admin label -->
+    <type name="Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Source\Transports">
+        <arguments>
+            <argument name="transports" xsi:type="array">
+                <item name="ga4" xsi:type="string" translate="true">Google Analytics (Measurement Protocol)</item>
+                <item name="sgtm" xsi:type="string" translate="true">Server-side Tag Manager</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Bounded whole-number settings -->
+    <virtualType name="HryvinskyiDataLayerServerRetentionDays"
+                 type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Backend\IntegerInRange">
+        <arguments>
+            <argument name="minimum" xsi:type="number">30</argument>
+            <argument name="maximum" xsi:type="number">1000</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="HryvinskyiDataLayerServerMaxAttempts"
+                 type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Backend\IntegerInRange">
+        <arguments>
+            <argument name="minimum" xsi:type="number">1</argument>
+            <argument name="maximum" xsi:type="number">20</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- The API secrets are sensitive: never written by `app:config:dump` to the shared configuration files, and set
+         from the command line only as sensitive values -->
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="hryvinskyi_datalayer_server/ga4/api_secret" xsi:type="string">1</item>
+                <item name="hryvinskyi_datalayer_server/sgtm/api_secret" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- The test event: sent only through transports whose debug mode goes to a validation endpoint that records
+         nothing; a server container has none -->
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\TestEventSenderInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\TestEventSender"/>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\Data\TestResultInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Data\TestResult"/>
+    <type name="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\TestEventSender">
+        <arguments>
+            <argument name="serializer" xsi:type="object">Magento\Framework\Serialize\Serializer\Json</argument>
+        </arguments>
+    </type>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\TestableTransportsInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\TestableTransports"/>
+    <type name="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\TestableTransports">
+        <arguments>
+            <argument name="codes" xsi:type="array">
+                <item name="ga4" xsi:type="string">ga4</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- The delivery actions: who may use them, the scope they act on, what they tell, queueing failed events
+         again, and how a delivery status is worded -->
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\DeliveryAccessInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\DeliveryAccess"/>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\WebsiteParameterInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\WebsiteParameter"/>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\DeliveryActionNoticesInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\DeliveryActionNotices"/>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\RetryFailedEventsInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Delivery\RetryFailedEvents"/>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\DeliveryStatusViewInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\DeliveryStatus\DeliveryStatusView"/>
+</config>

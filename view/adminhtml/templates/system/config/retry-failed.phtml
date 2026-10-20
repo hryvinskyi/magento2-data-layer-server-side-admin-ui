@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+
+/**
+ * The "Retry failed" button beside the failed events
+ *
+ * The button starts disabled: the settings page is one form already, so only the script can post the retry, and it
+ * enables the button once it is bound. The JSON configuration is written through a serializer that escapes `<` and
+ * `>`, so it cannot close its script tag.
+ *
+ * @var \Magento\Backend\Block\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var array{config: string, script: string} $view What the action assigned
+ */
+?>
+<div class="hryvinskyi-datalayer-retry" data-hryvinskyi-datalayer-retry-failed="1">
+    <button type="button" class="action-default" data-role="retry" disabled="disabled">
+        <span><?= $escaper->escapeHtml(__('Retry failed')) ?></span>
+    </button>
+    <script type="application/json" data-role="config"><?= /* @noEscape */ $view['config'] ?></script>
+</div>
+<?= /* @noEscape */ $view['script'] ?>

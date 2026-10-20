@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!-- The server-side group of the data layer's settings. Each setting keeps the path it is stored at; only
+             where the form shows it changed -->
+        <section id="hryvinskyi_datalayer">
+            <group id="server" translate="label comment" sortOrder="70" showInDefault="1" showInWebsite="1"
+                   showInStore="0">
+                <label>Server-side</label>
+                <comment>Sends events from Magento itself rather than from the shopper's browser.</comment>
+                <group id="delivery" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Delivery</label>
+                    <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                           showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Enabled</label>
+                        <comment>Sends the events routed to Server from Magento itself, so ad blockers cannot stop them. Delivery runs every minute in the background; the shopper never waits for it.</comment>
+                        <config_path>hryvinskyi_datalayer_server/general/enabled</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="transport" translate="label comment" type="select" sortOrder="20" showInDefault="1"
+                           showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Transport</label>
+                        <comment>Where server events go.</comment>
+                        <config_path>hryvinskyi_datalayer_server/general/transport</config_path>
+                        <source_model>Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Source\Transports</source_model>
+                    </field>
+                    <!-- Both transports need the web data stream (a server container forwards to it, and the
+                         visitor's session cookie is named after it), so it stays visible whichever is chosen -->
+                    <field id="measurement_id" translate="label comment" type="text" sortOrder="30" showInDefault="1"
+                           showInWebsite="1" showInStore="0">
+                        <label>Measurement ID</label>
+                        <comment>The GA4 web data stream that receives server events.</comment>
+                        <config_path>hryvinskyi_datalayer_server/ga4/measurement_id</config_path>
+                        <validate>validate-hryvinskyi-measurement-id</validate>
+                        <backend_model>Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Backend\MeasurementId</backend_model>
+                    </field>
+                    <field id="debug" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                           showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Debug mode</label>
+                        <comment>Google Analytics: sends to Google’s validation endpoint and logs its messages. Events are NOT recorded in GA4 while this is on. Server-side Tag Manager: events are recorded as usual, only logged in more detail.</comment>
+                        <config_path>hryvinskyi_datalayer_server/delivery/debug</config_path>
+                        <frontend_model>Hryvinskyi\DataLayerServerSideAdminUi\Block\Adminhtml\System\Config\WarningCommentField</frontend_model>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="max_attempts" translate="label comment" type="text" sortOrder="50" showInDefault="1"
+                           showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Maximum attempts</label>
+                        <comment>Failed sends are retried with growing delays (up to 6 hours apart), then marked failed.</comment>
+                        <config_path>hryvinskyi_datalayer_server/delivery/max_attempts</config_path>
+                        <validate>validate-hryvinskyi-whole-number-range whole-number-range-1-20</validate>
+                        <backend_model>HryvinskyiDataLayerServerMaxAttempts</backend_model>
+                    </field>
+                </group>
+                <group id="ga4" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Google Analytics (Measurement Protocol)</label>
+                    <depends>
+                        <field id="*/*/delivery/transport">ga4</field>
+                    </depends>
+                    <field id="api_secret" translate="label comment" type="obscure" sortOrder="20" showInDefault="1"
+                           showInWebsite="1" showInStore="0">
+                        <label>API secret</label>
+                        <comment>GA4 › Admin › Data streams › Measurement Protocol API secrets. Stored encrypted.</comment>
+                        <config_path>hryvinskyi_datalayer_server/ga4/api_secret</config_path>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    </field>
+                    <field id="region" translate="label comment" type="select" sortOrder="30" showInDefault="1"
+                           showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Region</label>
+                        <comment>Which Google collection endpoint server events are sent to.</comment>
+                        <config_path>hryvinskyi_datalayer_server/ga4/region</config_path>
+                        <source_model>Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Source\Ga4Regions</source_model>
+                    </field>
+                </group>
+                <group id="sgtm" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Server-side Tag Manager</label>
+                    <depends>
+                        <field id="*/*/delivery/transport">sgtm</field>
+                    </depends>
+                    <field id="endpoint" translate="label comment" type="text" sortOrder="10" showInDefault="1"
+                           showInWebsite="1" showInStore="0">
+                        <label>Endpoint</label>
+                        <comment>Your server container’s address (for example its own custom domain).</comment>
+                        <config_path>hryvinskyi_datalayer_server/sgtm/endpoint</config_path>
+                        <validate>validate-hryvinskyi-https-origin</validate>
+                        <backend_model>Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Backend\ServerContainerEndpoint</backend_model>
+                    </field>
+                    <field id="api_secret" translate="label comment" type="obscure" sortOrder="20" showInDefault="1"
+                           showInWebsite="1" showInStore="0">
+                        <label>API secret (optional)</label>
+                        <comment>Only when your server container asks for one. Never the Google Analytics secret.</comment>
+                        <config_path>hryvinskyi_datalayer_server/sgtm/api_secret</config_path>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    </field>
+                </group>
+                <group id="identity" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Identity</label>
+                    <field id="send_user_id" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                           showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Send customer ID as user_id</label>
+                        <comment>Signed-in customers only. Lets GA4 join the same customer across devices.</comment>
+                        <config_path>hryvinskyi_datalayer_server/identity/send_user_id</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="fallback_cookie" translate="label comment" type="select" sortOrder="20"
+                           showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Keep a first-party visitor ID when GA’s cookie is blocked</label>
+                        <comment>Without it, events from visitors who block Google Analytics arrive as new users each time.</comment>
+                        <config_path>hryvinskyi_datalayer_server/identity/fallback_cookie</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="retention_days" translate="label comment" type="text" sortOrder="30" showInDefault="1"
+                           showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Keep visitor IDs for (days)</label>
+                        <comment>Stored order and cart visitor IDs older than this are deleted. 30 to 1000.</comment>
+                        <config_path>hryvinskyi_datalayer_server/identity/retention_days</config_path>
+                        <validate>validate-hryvinskyi-whole-number-range whole-number-range-30-1000</validate>
+                        <backend_model>HryvinskyiDataLayerServerRetentionDays</backend_model>
+                    </field>
+                </group>
+                <group id="orders" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Orders</label>
+                    <field id="purchase_trigger" translate="label comment" type="select" sortOrder="10"
+                           showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                        <label>Send purchase when</label>
+                        <comment>Paid avoids counting orders that are never paid; placed reports sooner. Orders created in the admin are never sent: no shopper’s browser took part, so GA4 could not tie them to a visitor.</comment>
+                        <config_path>hryvinskyi_datalayer_server/orders/purchase_trigger</config_path>
+                        <source_model>Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Source\PurchaseTriggers</source_model>
+                    </field>
+                </group>
+                <group id="consent" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Consent</label>
+                    <field id="consent_notice" translate="comment" sortOrder="10" showInDefault="1"
+                           showInWebsite="1" showInStore="0">
+                        <comment>Consent is not checked yet: server events are sent whatever the visitor chose.</comment>
+                        <frontend_model>Hryvinskyi\DataLayerAdminUi\Block\Adminhtml\System\Config\NoticeRow</frontend_model>
+                    </field>
+                </group>
+                <!-- Read-only status and the delivery actions, shown as soon as the group opens -->
+                <field id="delivery_status" translate="label comment" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Delivery status</label>
+                    <comment>Read-only counts for this website.</comment>
+                    <frontend_model>Hryvinskyi\DataLayerServerSideAdminUi\Block\Adminhtml\System\Config\DeliveryStatus</frontend_model>
+                </field>
+                <field id="test_event" translate="label comment" sortOrder="80" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Send test event</label>
+                    <comment>Sends one event to Google’s validation endpoint and shows the reply here. Nothing is recorded in GA4.</comment>
+                    <frontend_model>Hryvinskyi\DataLayerServerSideAdminUi\Block\Adminhtml\System\Config\TestEvent</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

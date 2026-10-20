@@ -1,0 +1,35 @@
+<?php
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+
+/**
+ * The "Send test event" button, the note when the transport cannot be tested, and the area the reply is shown in
+ *
+ * The button starts disabled and the script enables it once it is bound, so a page whose script does not run offers
+ * nothing that does nothing. The JSON configuration is written through a serializer that escapes `<` and `>`, so it
+ * cannot close its script tag.
+ *
+ * @var \Hryvinskyi\DataLayerServerSideAdminUi\Block\Adminhtml\System\Config\TestEvent $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var array{id: string, testable: bool, config: string, script: string} $view What the block assigned
+ */
+?>
+<div class="hryvinskyi-datalayer-test" id="<?= $escaper->escapeHtmlAttr($view['id']) ?>"
+     data-hryvinskyi-datalayer-test-event="1">
+    <div class="hryvinskyi-datalayer-test__actions">
+        <button type="button" class="action-default" data-role="send" disabled="disabled">
+            <span><?= $escaper->escapeHtml(__('Send test event')) ?></span>
+        </button>
+    </div>
+    <?php if (!$view['testable']): ?>
+        <p class="hryvinskyi-datalayer-test__unavailable" data-role="unavailable">
+            <?= $escaper->escapeHtml(__('Testing is available for Google Analytics (Measurement Protocol) only.')) ?>
+        </p>
+    <?php endif; ?>
+    <div class="hryvinskyi-datalayer-test__result" data-role="result" role="status" aria-live="polite" hidden></div>
+    <script type="application/json" data-role="config"><?= /* @noEscape */ $view['config'] ?></script>
+</div>
+<?= /* @noEscape */ $view['script'] ?>

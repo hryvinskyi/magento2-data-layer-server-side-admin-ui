@@ -1,0 +1,127 @@
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+
+/*
+ * The setup wizard's server-side step: its side panel (the test event and the delivery status). Every class starts
+ * with `hdl-server-`; colours and corner radii are the wizard's own custom properties, so a theme that restyles the
+ * wizard restyles this step too. Fields, cards and messages are the wizard's kit and carry its styles.
+ */
+
+.hdl-server-tools,
+.hdl-server-tools__test {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hdl-server-tools__test > .hdl-setup-button {
+    align-self: flex-start;
+}
+
+.hdl-server-tools__note {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--hdl-setup-muted);
+}
+
+.hdl-server-test__messages {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--hdl-setup-mono);
+    font-size: 11.5px;
+    line-height: 1.45;
+    color: var(--hdl-setup-error-text);
+    overflow-wrap: anywhere;
+}
+
+.hdl-server-status {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--hdl-setup-line-faint);
+}
+
+.hdl-server-status__title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--hdl-setup-ink-soft);
+}
+
+.hdl-server-status__counts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+}
+
+.hdl-server-status__count {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    background: var(--hdl-setup-well);
+}
+
+.hdl-server-status__label {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--hdl-setup-muted);
+}
+
+.hdl-server-status__value {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--hdl-setup-ink);
+}
+
+.hdl-server-status__count[data-failing='true'] {
+    background: var(--hdl-setup-error-bg);
+}
+
+.hdl-server-status__count[data-failing='true'] .hdl-server-status__label {
+    color: var(--hdl-setup-error-deep);
+}
+
+.hdl-server-status__count[data-failing='true'] .hdl-server-status__value {
+    color: var(--hdl-setup-error-ink);
+}
+
+.hdl-server-status__line {
+    margin: 0;
+    font-size: 12px;
+    color: var(--hdl-setup-muted);
+}
+
+.hdl-server-status__failed {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: var(--hdl-setup-error-bg);
+    border: 1px solid var(--hdl-setup-error-line);
+    border-radius: var(--hdl-setup-radius-box);
+}
+
+.hdl-server-status__failed-text {
+    flex: 1;
+    min-width: 140px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--hdl-setup-error-deep);
+}

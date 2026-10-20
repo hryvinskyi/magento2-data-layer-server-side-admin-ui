@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- The event settings learn from this module whether server routes are delivered, and where that is set -->
+    <preference for="Hryvinskyi\DataLayerAdminUi\Api\ServerDeliveryStateInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\ServerDeliveryState"/>
+
+    <!-- The delivery actions' script: its entry and the names its modules import one another by -->
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\DeliveryActionsScriptInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\DeliveryStatus\DeliveryActionsScript"/>
+
+    <!-- Actions offered beside the failed events in the delivery status -->
+    <type name="Hryvinskyi\DataLayerServerSideAdminUi\Block\Adminhtml\System\Config\DeliveryStatus">
+        <arguments>
+            <argument name="failedActions" xsi:type="array">
+                <item name="retry" xsi:type="object">Hryvinskyi\DataLayerServerSideAdminUi\Model\DeliveryStatus\RetryFailedAction</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- The setup wizard's server-side step: the settings it edits (each under the path it is stored at), and what
+         the step adds to the wizard's page -->
+    <type name="Hryvinskyi\DataLayerAdminUi\Model\Setup\SettingDescriptors">
+        <arguments>
+            <argument name="descriptors" xsi:type="array">
+                <item name="ss_enabled" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/general/enabled</item>
+                    <item name="kind" xsi:type="string">flag</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="transport" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/general/transport</item>
+                    <item name="kind" xsi:type="string">choice</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="mp_id" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/ga4/measurement_id</item>
+                    <item name="kind" xsi:type="string">text</item>
+                    <item name="step" xsi:type="string">server</item>
+                    <item name="pattern" xsi:type="const">Hryvinskyi\DataLayerServerSide\Api\ConfigInterface::MEASUREMENT_ID_PATTERN</item>
+                    <item name="caseInsensitive" xsi:type="boolean">true</item>
+                </item>
+                <item name="api_secret" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/ga4/api_secret</item>
+                    <item name="kind" xsi:type="string">secret</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/ga4/region</item>
+                    <item name="kind" xsi:type="string">choice</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="endpoint" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/sgtm/endpoint</item>
+                    <item name="kind" xsi:type="string">text</item>
+                    <item name="step" xsi:type="string">server</item>
+                    <item name="pattern" xsi:type="const">Hryvinskyi\DataLayerServerSideAdminUi\Model\Config\Backend\ServerContainerEndpoint::HTTPS_ORIGIN_PATTERN</item>
+                </item>
+                <item name="sgtm_secret" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/sgtm/api_secret</item>
+                    <item name="kind" xsi:type="string">secret</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="user_id" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/identity/send_user_id</item>
+                    <item name="kind" xsi:type="string">flag</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="first_party" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/identity/fallback_cookie</item>
+                    <item name="kind" xsi:type="string">flag</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="visitor_days" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/identity/retention_days</item>
+                    <item name="kind" xsi:type="string">number</item>
+                    <item name="step" xsi:type="string">server</item>
+                    <item name="min" xsi:type="const">Hryvinskyi\DataLayerServerSide\Api\ConfigInterface::MIN_RETENTION_DAYS</item>
+                    <item name="max" xsi:type="const">Hryvinskyi\DataLayerServerSide\Api\ConfigInterface::MAX_RETENTION_DAYS</item>
+                </item>
+                <item name="purchase_trigger" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/orders/purchase_trigger</item>
+                    <item name="kind" xsi:type="string">choice</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="debug" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/delivery/debug</item>
+                    <item name="kind" xsi:type="string">flag</item>
+                    <item name="step" xsi:type="string">server</item>
+                </item>
+                <item name="max_attempts" xsi:type="array">
+                    <item name="path" xsi:type="string">hryvinskyi_datalayer_server/delivery/max_attempts</item>
+                    <item name="kind" xsi:type="string">number</item>
+                    <item name="step" xsi:type="string">server</item>
+                    <item name="min" xsi:type="const">Hryvinskyi\DataLayerServerSide\Api\ConfigInterface::MIN_ATTEMPTS</item>
+                    <item name="max" xsi:type="const">Hryvinskyi\DataLayerServerSide\Api\ConfigInterface::MAX_ATTEMPTS</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Hryvinskyi\DataLayerAdminUi\Model\Setup\SetupContributions">
+        <arguments>
+            <argument name="contributions" xsi:type="array">
+                <item name="server" xsi:type="object">Hryvinskyi\DataLayerServerSideAdminUi\Model\Setup\ServerSideContribution</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Hryvinskyi\DataLayerServerSideAdminUi\Model\Setup\ServerSideContribution">
+        <arguments>
+            <argument name="phrases" xsi:type="array">
+                <item name="server.step.title" xsi:type="string" translate="true">Server-side</item>
+                <item name="server.step.intro" xsi:type="string" translate="true">Sends selected events, such as purchase, from Magento straight to Google, so ad blockers and closed tabs don’t lose them. Optional: browser tracking keeps working without it.</item>
+                <item name="server.skipped" xsi:type="string" translate="true">Skipped: only the browser sends events. Switch it on below to set it up now.</item>
+                <item name="server.card.delivery" xsi:type="string" translate="true">Server-side delivery</item>
+                <item name="server.card.identity" xsi:type="string" translate="true">Identity</item>
+                <item name="server.card.orders" xsi:type="string" translate="true">Orders</item>
+                <item name="server.card.queue" xsi:type="string" translate="true">Delivery</item>
+                <item name="server.help.ss_enabled" xsi:type="string" translate="true">Events routed to Server or Both are sent in the background, so the shopper never waits for them.</item>
+                <item name="server.help.mp_id" xsi:type="string" translate="true">The GA4 web data stream that receives server events.</item>
+                <item name="server.help.endpoint" xsi:type="string" translate="true">An https address with no path, for example https://sst.example.com.</item>
+                <item name="server.help.user_id" xsi:type="string" translate="true">Signed-in customers only.</item>
+                <item name="server.help.purchase_trigger" xsi:type="string" translate="true">Paid leaves out unpaid orders; placed reports sooner.</item>
+                <item name="server.placeholder.mp_id" xsi:type="string">G-XXXXXXXXXX</item>
+                <item name="server.placeholder.endpoint" xsi:type="string">https://sst.example.com</item>
+                <item name="server.unit.days" xsi:type="string" translate="true">days</item>
+                <item name="server.transport.ga4.description" xsi:type="string" translate="true">Straight to your GA4 property.</item>
+                <item name="server.transport.sgtm.description" xsi:type="string" translate="true">To your server container, which forwards to GA4 and others.</item>
+                <item name="server.debug.warning" xsi:type="string" translate="true">Debug mode is on: events go to Google’s validation endpoint and are NOT recorded in GA4.</item>
+                <item name="server.consent" xsi:type="string" translate="true">Server events are sent whatever the visitor chose in the cookie banner.</item>
+                <item name="server.tools.title" xsi:type="string" translate="true">Live tools</item>
+                <item name="server.tools.forbidden" xsi:type="string" translate="true">Sending a test event and queueing failed events again need the “Server-side delivery actions” permission.</item>
+                <item name="server.test.send" xsi:type="string" translate="true">Send test event</item>
+                <item name="server.test.sending" xsi:type="string" translate="true">Sending…</item>
+                <item name="server.test.note" xsi:type="string" translate="true">Uses the values on screen; nothing is saved.</item>
+                <item name="server.test.valid" xsi:type="string" translate="true">Valid.</item>
+                <item name="server.test.valid_text" xsi:type="string" translate="true">Google returned no messages.</item>
+                <item name="server.test.messages.one" xsi:type="string" translate="true">%1 validation message</item>
+                <item name="server.test.messages.other" xsi:type="string" translate="true">%1 validation messages</item>
+                <item name="server.test.failed" xsi:type="string" translate="true">Not checked.</item>
+                <item name="server.test.unavailable" xsi:type="string" translate="true">Not available for %1: it has no validation endpoint, so a test event would be recorded.</item>
+                <item name="server.status.title" xsi:type="string" translate="true">Delivery status</item>
+                <item name="server.status.pending" xsi:type="string" translate="true">Pending</item>
+                <item name="server.status.sent" xsi:type="string" translate="true">Sent</item>
+                <item name="server.status.failed" xsi:type="string" translate="true">Failed</item>
+                <item name="server.retry" xsi:type="string" translate="true">Retry failed</item>
+                <item name="server.summary.off" xsi:type="string" translate="true">Browser only</item>
+                <item name="server.summary.valid" xsi:type="string" translate="true">%1 · test valid</item>
+                <item name="server.summary.messages.one" xsi:type="string" translate="true">%2 · %1 test message</item>
+                <item name="server.summary.messages.other" xsi:type="string" translate="true">%2 · %1 test messages</item>
+                <item name="error.mp_id.required" xsi:type="string" translate="true">Enter a measurement ID.</item>
+                <item name="error.mp_id.format" xsi:type="string" translate="true">Use the format G- followed by letters and digits.</item>
+                <item name="error.api_secret.required" xsi:type="string" translate="true">Enter the API secret.</item>
+                <item name="error.endpoint.required" xsi:type="string" translate="true">Enter your server container’s address.</item>
+                <item name="error.endpoint.format" xsi:type="string" translate="true">Enter an https:// address with no path or query, for example https://sst.example.com.</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- The step's page data: which settings each transport shows, in order, and its glyph -->
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\Setup\ServerStepDataInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Setup\ServerStepData"/>
+    <type name="Hryvinskyi\DataLayerServerSideAdminUi\Model\Setup\ServerStepData">
+        <arguments>
+            <argument name="transportFields" xsi:type="array">
+                <item name="ga4" xsi:type="array">
+                    <item name="mp_id" xsi:type="string">mp_id</item>
+                    <item name="api_secret" xsi:type="string">api_secret</item>
+                    <item name="region" xsi:type="string">region</item>
+                </item>
+                <item name="sgtm" xsi:type="array">
+                    <item name="mp_id" xsi:type="string">mp_id</item>
+                    <item name="endpoint" xsi:type="string">endpoint</item>
+                    <item name="sgtm_secret" xsi:type="string">sgtm_secret</item>
+                </item>
+            </argument>
+            <argument name="transportIcons" xsi:type="array">
+                <item name="ga4" xsi:type="string">analytics</item>
+                <item name="sgtm" xsi:type="string">dns</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- The step's test event: the website of a scope, the unsaved settings it is sent with, and its request -->
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\Setup\ScopeWebsiteInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Setup\ScopeWebsite"/>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\Setup\TestEventDraftInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Setup\TestEventDraft"/>
+    <preference for="Hryvinskyi\DataLayerServerSideAdminUi\Api\Setup\TestEventRequestReaderInterface"
+                type="Hryvinskyi\DataLayerServerSideAdminUi\Model\Setup\TestEventRequestReader"/>
+</config>
