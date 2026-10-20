@@ -18,7 +18,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const PACKAGE = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const SDK = resolve(PACKAGE, '../../../DataLayerAdminUi/frontend/setup-wizard/src/sdk/index.ts');
+const SDK = resolve(PACKAGE, '../../../magento2-data-layer-admin-ui/frontend/setup-wizard/src/sdk/index.ts');
 const SHARED_PREACT = new Set(['preact', 'preact/hooks', 'preact/jsx-runtime']);
 const OWN_PARENT = pathToFileURL(resolve(PACKAGE, 'test/resolve-shared.mjs')).href;
 

@@ -115,8 +115,8 @@
                     </field>
                     <field id="fallback_cookie" translate="label comment" type="select" sortOrder="20"
                            showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                        <label>Keep a first-party visitor ID when GA’s cookie is blocked</label>
-                        <comment>Without it, events from visitors who block Google Analytics arrive as new users each time.</comment>
+                        <label>Keep a first-party visitor ID</label>
+                        <comment>Used when GA’s cookie is blocked. Without it, events from visitors who block Google Analytics arrive as new users each time.</comment>
                         <config_path>hryvinskyi_datalayer_server/identity/fallback_cookie</config_path>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
@@ -153,7 +153,7 @@
                 <field id="delivery_status" translate="label comment" sortOrder="70" showInDefault="1"
                        showInWebsite="1" showInStore="0">
                     <label>Delivery status</label>
-                    <comment>Read-only counts for this website.</comment>
+                    <comment>Read-only counts for this website, or for all websites at Default.</comment>
                     <frontend_model>Hryvinskyi\DataLayerServerSideAdminUi\Block\Adminhtml\System\Config\DeliveryStatus</frontend_model>
                 </field>
                 <field id="test_event" translate="label comment" sortOrder="80" showInDefault="1" showInWebsite="1"

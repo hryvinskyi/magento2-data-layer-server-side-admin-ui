@@ -126,6 +126,7 @@
                 <item name="server.help.mp_id" xsi:type="string" translate="true">The GA4 web data stream that receives server events.</item>
                 <item name="server.help.endpoint" xsi:type="string" translate="true">An https address with no path, for example https://sst.example.com.</item>
                 <item name="server.help.user_id" xsi:type="string" translate="true">Signed-in customers only.</item>
+                <item name="server.help.first_party" xsi:type="string" translate="true">Used when GA’s cookie is blocked.</item>
                 <item name="server.help.purchase_trigger" xsi:type="string" translate="true">Paid leaves out unpaid orders; placed reports sooner.</item>
                 <item name="server.placeholder.mp_id" xsi:type="string">G-XXXXXXXXXX</item>
                 <item name="server.placeholder.endpoint" xsi:type="string">https://sst.example.com</item>

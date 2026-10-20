@@ -30,6 +30,7 @@ export const SERVER_PHRASES: readonly string[] = [
     'server.help.mp_id',
     'server.help.endpoint',
     'server.help.user_id',
+    'server.help.first_party',
     'server.help.purchase_trigger',
     'server.placeholder.mp_id',
     'server.placeholder.endpoint',
