@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-11-06
+
+### Changed
+
+- The setup wizard's server-side step takes its colours, typeface and corner radii from the shared admin UI kit (`hryvinskyi/magento2-admin-ui`), the kit the setup wizard draws with since `hryvinskyi/magento2-data-layer-admin-ui` 1.1. A theme that restyles the kit's `--hui-*` properties restyles the step too. Two tones the kit has no property for still come from the wizard: `--hdl-setup-error-text` and `--hdl-setup-error-deep`.
+- The Send test event button is selected as the kit's `hui-button`; the wizard 1.0 class `hdl-setup-button` is no longer emitted by the SDK's components.
+- Requires `hryvinskyi/magento2-admin-ui` ^1.0 and `hryvinskyi/magento2-data-layer-admin-ui` ^1.1. With data layer admin UI 1.0 the step's stylesheet would read properties that page does not declare.
+
 ## [1.0.1] - 2026-10-20
 
 ### Fixed

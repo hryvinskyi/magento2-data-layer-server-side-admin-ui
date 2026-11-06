@@ -6,7 +6,7 @@
 
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
-import { act, cleanup, fireEvent, waitFor } from '@testing-library/preact';
+import { act, cleanup, fireEvent, waitFor, within } from '@testing-library/preact';
 import {
     applyPlugin,
     createDraft,
@@ -57,9 +57,9 @@ describe('the server-side step', () => {
 
         // The website inherits the transport: it is overridden here first, as a person would.
         const transport = rendered.getByRole('radiogroup', { name: 'transport' });
-        const field = transport.closest('.hdl-setup-field');
+        const field = transport.closest('.hui-field');
         assert.ok(field instanceof HTMLElement);
-        await settle(() => fireEvent.click(field.querySelector('.hdl-setup-origin__action') ?? field));
+        await settle(() => fireEvent.click(within(field).getByRole('button', { name: 'action.override' })));
         await settle(() => fireEvent.click(rendered.getByRole('radio', { name: /transport\.sgtm/ })));
 
         assert.ok(rendered.queryByLabelText('endpoint') !== null);
@@ -185,9 +185,9 @@ describe('the server-side step', () => {
 
     it('hides Retry failed at a website without failed events', async () => {
         const rendered = renderServerStep(withStepData({}, 'website:2'));
-        const enabled = rendered.getByRole('switch', { name: 'ss_enabled' }).closest('.hdl-setup-field');
+        const enabled = rendered.getByRole('switch', { name: 'ss_enabled' }).closest('.hui-field');
         assert.ok(enabled instanceof HTMLElement);
-        await settle(() => fireEvent.click(enabled.querySelector('.hdl-setup-origin__action') ?? enabled));
+        await settle(() => fireEvent.click(within(enabled).getByRole('button', { name: 'action.override' })));
         await settle(() => fireEvent.click(rendered.getByRole('switch', { name: 'ss_enabled' })));
 
         await waitFor(() => assert.ok(rendered.getByText('server.status.title') !== null));

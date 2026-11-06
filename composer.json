@@ -2,7 +2,7 @@
     "name": "hryvinskyi/magento2-data-layer-server-side-admin-ui",
     "description": "Admin surface of server-side GA4 events: their group in the data layer's configuration section, the access rule of its actions, the delivery status and its actions (queue failed events again, send a test event), option lists, validation rules and validated settings, and the setup wizard's server-side step.",
     "type": "magento2-module",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "license": "MIT",
     "authors": [
         {
@@ -15,7 +15,8 @@
         "hryvinskyi/magento2-data-layer-api": "^1.0",
         "hryvinskyi/magento2-data-layer": "^1.0",
         "hryvinskyi/magento2-data-layer-server-side": "^1.0",
-        "hryvinskyi/magento2-data-layer-admin-ui": "^1.0",
+        "hryvinskyi/magento2-data-layer-admin-ui": "^1.1",
+        "hryvinskyi/magento2-admin-ui": "^1.0",
         "hryvinskyi/magento2-theme-assets": "^1.0.1",
         "magento/framework": "*",
         "magento/module-backend": "*",
