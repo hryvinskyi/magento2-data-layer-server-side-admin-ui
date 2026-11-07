@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-11-07
+
+### Changed
+
+- The warning comment of a setting (the debug switch's) takes its colour from the shared admin UI kit: the `<p>` is a token root (`class="note hryvinskyi-datalayer-note--warning hui-tokens"`) and its colour is `--hui-warn-ink`. The rule lives in this module's own `css/warning-comment.css`, which the settings page links after the kit's stylesheet; `hryvinskyi/magento2-data-layer-admin-ui` no longer carries it (1.1.1 drops it), so install both at 1.1.1 or the comment loses its colour.
+
 ## [1.1.0] - 2026-11-06
 
 ### Changed

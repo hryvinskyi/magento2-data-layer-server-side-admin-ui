@@ -310,7 +310,10 @@ class AdminSectionTest extends TestCase
         self::assertStringContainsString('<td colspan="4">', $notice);
         self::assertStringContainsString('class="hryvinskyi-datalayer-notice" role="note"', $notice);
         self::assertStringContainsString('Consent is not checked yet', $notice);
-        self::assertStringContainsString('class="note hryvinskyi-datalayer-note--warning"', $debug);
+        self::assertStringContainsString(
+            '<p class="note hryvinskyi-datalayer-note--warning hui-tokens"><span>',
+            $debug
+        );
         self::assertStringContainsString('Events are NOT recorded in GA4 while this is on', $debug);
     }
 

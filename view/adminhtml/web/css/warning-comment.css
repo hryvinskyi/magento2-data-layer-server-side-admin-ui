@@ -1,0 +1,16 @@
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+
+/*
+ * A setting whose comment warns: the form's note in the warning colour. The note is a token root of its own
+ * (`hui-tokens`), so the colour comes from the admin UI kit's `--hui-warn-ink` while the setting row around it keeps
+ * the admin theme.
+ */
+.hryvinskyi-datalayer-note--warning.note,
+.hryvinskyi-datalayer-note--warning.note span {
+    color: var(--hui-warn-ink);
+    font-weight: 600;
+}

@@ -8,8 +8,12 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <!-- The look of the server-side delivery rows: the status counts, the retry button and the test event's reply -->
+    <!-- The admin UI kit's stylesheet comes first: the warning comment reads its tokens -->
+    <update handle="hryvinskyi_admin_ui"/>
     <head>
+        <!-- The look of the server-side delivery rows: the status counts, the retry button and the test event's reply -->
         <css src="Hryvinskyi_DataLayerServerSideAdminUi::css/delivery-actions.css"/>
+        <!-- A setting whose comment warns -->
+        <css src="Hryvinskyi_DataLayerServerSideAdminUi::css/warning-comment.css"/>
     </head>
 </page>

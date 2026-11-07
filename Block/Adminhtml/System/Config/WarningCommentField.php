@@ -14,6 +14,9 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 
 /**
  * A setting whose comment is a warning: the comment is shown in the warning colour
+ *
+ * The note is a token root of its own (`hui-tokens`), so the colour reads the admin UI kit's `--hui-warn-ink` while the
+ * setting row around it keeps the admin theme.
  */
 class WarningCommentField extends Field
 {
@@ -29,7 +32,7 @@ class WarningCommentField extends Field
         $html = '<td class="value">' . $this->_getElementHtml($element);
         $comment = is_scalar($comment) || $comment instanceof \Stringable ? (string) $comment : '';
         if ($comment !== '') {
-            $html .= '<p class="note hryvinskyi-datalayer-note--warning"><span>' . $comment . '</span></p>';
+            $html .= '<p class="note hryvinskyi-datalayer-note--warning hui-tokens"><span>' . $comment . '</span></p>';
         }
 
         return $html . '</td>';
